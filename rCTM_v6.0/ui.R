@@ -37,7 +37,7 @@ sidebarLayout(
                 sliderInput("settlingVelocity", "Settling Velocity", 0, 999, 2.8)),
             column(6,
                 sliderInput("lunarNodalAmp", "Lunar Nodal Amp", 0, 999, 2.5),
-                sliderInput("meanSeaLevel", "Initial Rate SLR", 0, 999, 999),
+                sliderInput("meanSeaLevel", "Initial Rate SLR", 0, 999, 7.4),
                 sliderInput("suspendedSediment", "Susp. Sediment Conc.", 0, 1, 3e-05),
                 sliderInput("initElev", "Marsh Elevation", 0, 999, 21.9),
                 sliderInput("coreYear", "Core Year", 0, 999, 2050),
@@ -73,7 +73,7 @@ sidebarLayout(
 # MAIN PANEL ----------------------------------------------
     mainPanel(
         tabsetPanel(
-            tabPanel("Plots"),
+            tabPanel("Plots", plotOutput("plot1")),
             tabPanel("Animation"),
             tabPanel("Model Diagram"),
             tabPanel("Parameter Ranges"),
