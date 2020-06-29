@@ -6,20 +6,20 @@
 #'
 #' @importFrom dplyr rename starts_with mutate group_by summarize filter if_else
 #' @importFrom tidyr separate  pivot_longer
-#' @import ggplot2
+#' @import ggplot2 to make pretty plots
 #' 
 #' @return a list of 6 plots similar to those in MEM 3.4 
 #' 
 #' @export
 #'
-makePlots <- function(sim.df){
+makePlots <- function(modelOutput){
   ans <- list(
     plot1= #A plot of Standing biomass vs Marsh Elevation
-      ggplot(modelOutput[1], aes(x=surfaceElevation, y=biomass)) +
+      ggplot(modelOutput$annualTimeSteps, aes(x=surfaceElevation, y=biomass)) +
       geom_line(),
  
     plot2= #A plot of standing biomass vs time
-      ggplot(modelOutput[1], aes(x=years, y=biomass)) +
+      ggplot(modelOutput$annualTimeSteps, aes(x=years, y=biomass)) +
       geom_line()
   )
   

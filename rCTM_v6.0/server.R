@@ -8,7 +8,7 @@
 #
 library(shiny)
 #library(rCTM)
-  # currently using local functios for debugging purposes
+  # currently using local functions for debugging purposes
 
 # Define server logic
 shinyServer(function(input, output) {
@@ -35,18 +35,18 @@ shinyServer(function(input, output) {
   })
 
 # Run "makePlots" and add plots to GUI window
-  makePlots <- eventReactive(input$run_sim, {
+  graphs <- eventReactive(input$run_sim, {
     modelOutput <- do.call(runMemWithCohorts, getParms())
-    source(R/makePlots.R)
-    makePlots.R(modelOutput)
+    print(modelOutput)
+    makePlots(modelOutput)
   })  
   
   output$plot1 <- renderPlot({
-    makePlots()$plot1
+    graphs()$plot1
   })
   
   output$plot2 <- renderPlot({
-    makePlots()$plot2
+    graphs()$plot2
   })
   
 })
