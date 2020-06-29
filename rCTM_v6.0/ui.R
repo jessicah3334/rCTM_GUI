@@ -102,7 +102,7 @@ shinyUI(fluidPage(dashboardPage(
                 collapsible = TRUE,
                 fluidRow(
                     column(width = 4,
-                           sliderInput("vegElevRange", "Plant Growing Elevation Range", -30, 999, c(44.4, -24.7), step = 0.1),
+                           sliderInput("vegElevRange", "Plant Growing Elevation Range", -30, 999, c(-24.7,44.4), step = 0.1),
                            sliderInput("bMax", "Maximum Biomass", 0, 999, 0.25, step = 0.01),
                            sliderInput("omDecayRate", "Organic Matter Decay Rate", 0, 999, 0.8, step = 0.1),
                            sliderInput("rootToShoot", "Root to Shoot Ratio", 0, 999, 2) 
@@ -136,6 +136,13 @@ shinyUI(fluidPage(dashboardPage(
                 )
             )    
                 
+        ),
+        tabItem(tabName = "Plots",
+            box(title = "Plots",
+                width = 12,
+                plotOutput("plot1"),
+                plotOutput("plot2")
+            )
         )
         
     ))
