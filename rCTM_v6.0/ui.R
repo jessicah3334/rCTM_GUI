@@ -9,6 +9,8 @@
 library(shiny)
 library(shinydashboard)
 library(rCTM)
+#Currently sourcing R scripts manually:
+    #source("./R/makePlots.R")
 
 shinyUI(fluidPage(dashboardPage(
     skin = "green",
@@ -23,15 +25,19 @@ shinyUI(fluidPage(dashboardPage(
 # SIDEBAR --------------------------------------------------------------------
     dashboardSidebar(
         width = 350,
+        sidebarMenu(
+        id = "tabs",
         fluidRow(
+            column(1),
             column(4,
                    actionButton("run_sim", "Run Simulation")),
-            column(6,
+            column(4,
                    actionButton("restore_inputs", "Restore Inputs"))),
         menuItem(
             "INPUTS",
             tabName = "Inputs",
-            icon = icon("sliders-h")
+            icon = icon("sliders-h"),
+            selected = TRUE
         ),
         menuItem(
             "OPTIONS",
@@ -66,7 +72,7 @@ shinyUI(fluidPage(dashboardPage(
         
     
         
-    ),
+    )),
 
 # MAIN PANEL -----------------------------------------------------------------
     dashboardBody(tabItems(
@@ -76,7 +82,7 @@ shinyUI(fluidPage(dashboardPage(
                 collapsible = TRUE,
                 fluidRow(
                     column(width = 4,
-                           sliderInput("dateRange", "Date Range", 1500, 2500, c(2020,2119), step = 1),
+                           sliderInput("dateRange", "Date Range", 1500, 2500, c(2020,2119), step = 1, sep = ""),
                            sliderInput("relSeaLevelRiseTotal", "Century Sea Level Rise", 0, 100, 100),
                            sliderInput("relSeaLevelRiseInit", "Initial Sea Level Rise", 0, 10, 0.3, step = 0.1),
                            sliderInput("meanHighWater", "Mean High Water", 0, 999, 16.9, step = 0.1),
@@ -90,7 +96,7 @@ shinyUI(fluidPage(dashboardPage(
                            sliderInput("initElev", "Marsh Elevation", 0, 999, 21.9, step = 0.1)
                     ),
                     column(width = 4,
-                           sliderInput("coreYear", "Core Year", 0, 9999, 2050),
+                           sliderInput("coreYear", "Core Year", 0, 9999, 2050, sep = ""),
                            sliderInput("coreDepth", "Core Depth", 0, 999, 100),
                            #sliderInput("coreRange", "Core Range", 0, 999, c(0,999)),
                            sliderInput("recalcitrantFrac", "Recalcitrant Fraction", 0, 1, 0.2, step = 0.1)
@@ -140,8 +146,18 @@ shinyUI(fluidPage(dashboardPage(
         tabItem(tabName = "Plots",
             box(title = "Plots",
                 width = 12,
-                plotOutput("plot1"),
-                plotOutput("plot2")
+                fluidRow(
+                    column(width = 6,
+                           plotOutput("plot1", height = '200px'),
+                           plotOutput("plot2", height = '200px'),
+                           plotOutput("plot3", height = '200px')
+                           ),
+                    column(width = 6,
+                           plotOutput("plot4", height = '200px'),
+                           plotOutput("plot5", height = '200px'),
+                           plotOutput("plot6", height = '200px')
+                           )
+                )
             )
         )
         

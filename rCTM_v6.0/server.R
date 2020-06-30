@@ -6,12 +6,12 @@
 #
 #    http://shiny.rstudio.com/
 #
-
 # Define server logic
-shinyServer(function(input, output) {
+shinyServer(function(input, output, session) {
   
   #Make a reactive function to populate inputParms
   getParms <- reactive({
+    
     
     inputParms <- list(startYear = input$dateRange[1],
                        endYear = input$dateRange[2],
@@ -54,19 +54,31 @@ shinyServer(function(input, output) {
     do.call(rCTM::runMemWithCohorts, getParms())
   })
   
-  # Run "makePlots" and add plots to GUI window
+  # Run "makePlots"
   graphs <- eventReactive(input$run_sim, {
     modelOutput <- do.call(rCTM::runMemWithCohorts, getParms())
     #print(modelOutput)
     makePlots(modelOutput)
   })  
   
+  # Render Plots for UI window
   output$plot1 <- renderPlot({
     graphs()$plot1
   })
-  
   output$plot2 <- renderPlot({
     graphs()$plot2
+  })
+  output$plot3 <- renderPlot({
+    graphs()$plot3
+  })
+  output$plot4 <- renderPlot({
+    graphs()$plot4
+  })
+  output$plot5 <- renderPlot({
+    graphs()$plot5
+  })
+  output$plot6 <- renderPlot({
+    graphs()$plot6
   })
   
 })
