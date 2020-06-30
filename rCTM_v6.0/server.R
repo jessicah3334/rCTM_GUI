@@ -11,8 +11,6 @@ shinyServer(function(input, output, session) {
   
   #Make a reactive function to populate inputParms
   getParms <- reactive({
-    
-    
     inputParms <- list(startYear = input$dateRange[1],
                        endYear = input$dateRange[2],
                        relSeaLevelRiseInit = input$relSeaLevelRiseInit,
@@ -80,5 +78,20 @@ shinyServer(function(input, output, session) {
   output$plot6 <- renderPlot({
     graphs()$plot6
   })
+  
+  #Run animateCohorts and render gif
+  gif <- observeEvent(input$run_sim, {
+    modelOutput <- do.call(rCTM::runMemWithCohorts, getParms())
+    do.call(rCTM::animateCohorts, args = list(cohorts = modelOutput$cohorts,
+                                 scenario = modelOutput$annualTimeSteps))
+  })
+  
+  output$gif <- renderImage({
+    # Return a list containing the filename
+    list(src = "MEM-CTM-animated.gif",
+         contentType = 'image/gif',
+          width = 400,
+          height = 300
+    )}, deleteFile = TRUE)
   
 })

@@ -9,6 +9,7 @@
 library(shiny)
 library(shinydashboard)
 library(rCTM)
+library(gganimate)
 #Currently sourcing R scripts manually:
     #source("./R/makePlots.R")
 
@@ -159,8 +160,29 @@ shinyUI(fluidPage(dashboardPage(
                            )
                 )
             )
-        )
+        ),
         
-    ))
+        tabItem(tabName = "Animation",
+                box(width = 12,
+                    imageOutput("gif")
+                    )
+                ),
+        tabItem(tabName = "Model Diagram",
+                box(width = 12,
+                    
+                    )
+                ),
+        tabItem(tabName = "Parameter Ranges",
+                box(width = 12,
+                    
+                    )
+                ),
+        tabItem(tabName = "R Code for Parameterizationss",
+                  box(width = 12,
+                      
+                  )
+                )
+        
+    ))# Close main panel
 
-)))#Close function
+)))# Close function
