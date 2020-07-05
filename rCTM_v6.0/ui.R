@@ -9,17 +9,17 @@
 library(shiny)
 library(shinydashboard)
 library(rCTM)
-library(gganimate)
+library(DT)
 #Currently sourcing R scripts manually:
     #source("./R/makePlots.R")
 
 shinyUI(fluidPage(dashboardPage(
     skin = "green",
-    title = "Marsh Equilibrium Cohort Model v",
+    title = paste("The Marsh Equilibrium Cohort Model v", packageVersion('rCTM')),
 
 # HEADER ---------------------------------------------------------------------
     dashboardHeader(
-        title = "Marsh Equilibrium Cohort Model v",
+        title = paste("The Marsh Equilibrium Cohort Model v", packageVersion('rCTM')),
         titleWidth = 500
     ),
 
@@ -57,17 +57,17 @@ shinyUI(fluidPage(dashboardPage(
         ),
         menuItem(
             "MODEL DIAGRAM",
-            tabName = "Model Diagram",
+            tabName = "ModelDiagram",
             icon = icon("project-diagram")
         ),
         menuItem(
             "PARAMETER RANGES",
-            tabName = "Parameter Ranges",
+            tabName = "ParameterRanges",
             icon = icon("clipboard-list")
         ),
         menuItem(
             "R CODE FOR PARAMETERIZATION",
-            tabName = "R Code For Parameterization",
+            tabName = "RCodeForParameterization",
             icon = icon("download")
         )
         
@@ -164,20 +164,26 @@ shinyUI(fluidPage(dashboardPage(
         
         tabItem(tabName = "Animation",
                 box(width = 12,
+                    title = "Animation",
+                    actionButton("generate_gif", "Generate Animation"),
+                    br(),
+                    br(),
                     imageOutput("gif")
                     )
                 ),
-        tabItem(tabName = "Model Diagram",
+        tabItem(tabName = "ModelDiagram",
                 box(width = 12,
-                    
+                    title = "Model Diagram",
+                    imageOutput("model_diagram")
                     )
                 ),
-        tabItem(tabName = "Parameter Ranges",
+        tabItem(tabName = "ParameterRanges",
                 box(width = 12,
-                    
+                    title = "Parameter Ranges",
+                    DT::dataTableOutput('parameter_spreadsheet')
                     )
                 ),
-        tabItem(tabName = "R Code for Parameterizationss",
+        tabItem(tabName = "RCodeforParameterization",
                   box(width = 12,
                       
                   )

@@ -9,6 +9,7 @@
 # Define server logic
 shinyServer(function(input, output, session) {
   
+# Load Initial ----------------------------------------------------------------------------
   #Make a reactive function to populate inputParms
   getParms <- reactive({
     inputParms <- list(startYear = input$dateRange[1],
@@ -52,6 +53,7 @@ shinyServer(function(input, output, session) {
     do.call(rCTM::runMemWithCohorts, getParms())
   })
   
+# Plots Tab -----------------------------------------------------------------------------
   # Run "makePlots"
   graphs <- eventReactive(input$run_sim, {
     modelOutput <- do.call(rCTM::runMemWithCohorts, getParms())
@@ -79,19 +81,40 @@ shinyServer(function(input, output, session) {
     graphs()$plot6
   })
   
+# Animations Tab ------------------------------------------------------------------------
   #Run animateCohorts and render gif
-  gif <- observeEvent(input$run_sim, {
+  gif <- observeEvent(input$generate_gif, {
     modelOutput <- do.call(rCTM::runMemWithCohorts, getParms())
     do.call(rCTM::animateCohorts, args = list(cohorts = modelOutput$cohorts,
-                                 scenario = modelOutput$annualTimeSteps))
+                                 scenario = modelOutput$annualTimeSteps,
+                                 duration = 20))
   })
-  
+ 
   output$gif <- renderImage({
     # Return a list containing the filename
     list(src = "MEM-CTM-animated.gif",
          contentType = 'image/gif',
-          width = 400,
-          height = 300
+          width = 450,
+          height = 450
     )}, deleteFile = TRUE)
+  
+# Model Diagram Tab ---------------------------------------------------------------------  
+  #Render Model diagram
+  output$model_diagram <- renderImage({
+    # Return a list containing the filename
+    list(src = "../www/model_diagram.png",
+         contentType = 'image/png',
+         width = 900,
+         height = 500,
+         alt = "Oops... something went wrong!"
+    )}, deleteFile = FALSE)
+  
+# Parameter Ranges Tab ------------------------------------------------------------------
+  #Read csv as data table:
+  parameters <- read.csv("../www/MEM_Variables.csv")
+  
+  output$parameter_spreadsheet <- DT::renderDataTable({
+    DT::datatable(parameters)})
+  
   
 })

@@ -13,6 +13,23 @@
 #' @export
 #'
 makePlots <- function(modelOutput){
+  #calculate OM fraction for modelOutput$cohorts
+  modelOutput$cohorts <- modelOutput$cohorts %>% 
+    dplyr::mutate(om_fraction = (fast_OM+slow_OM)/cumCohortVol)
+  
+  #Find change in carbon stock over time by taking the numerical derivative
+  modelOutput$cohorts <- modelOutput$cohorts %>%
+    dplyr::mutate(dcdt = rep(NA, times = nrow(modelOutput$cohorts)))
+                    
+  carbon <- rep(NA, times = nrow(modelOutput$cohorts))
+  for(ii in 1:nrow(modelOutput$cohorts)){
+        carbon[ii] <- modelOutput$cohorts$fast_OM[ii] + modelOutput$cohorts$slow_OM[ii]
+  }
+  for(ii in 1:nrow(modelOutput$cohorts)){
+        modelOutput$cohorts$dcdt[ii] <- (carbon[ii+1] - carbon[ii]) / (modelOutput$cohorts$age[ii+1] - modelOutput$cohorts$age[ii])
+  }
+                
+  
   ans <- list(
     plot1= #A plot of Standing biomass vs Marsh Elevation ---------------------
       ggplot(modelOutput$annualTimeSteps,
@@ -39,17 +56,20 @@ makePlots <- function(modelOutput){
       geom_line(aes(x=years, y=meanSeaLevel, color = "Mean Sea Level")) +
       theme(legend.justification=c(0,1), legend.position=c(0,1)),
       
-    plot5= #A plot of Sediment Organic matter vs Sediment depth -----------------
-      ggplot() +
+    plot5= #A plot of Carbon stock per volume vs depth -------------------------
+      ggplot(modelOutput$cohorts,
+             aes(x=layer_top, y=om_fraction)) +
       labs(x="Sediment Depth (cm)", y="Sediment Organic Matter (%)") +
-      geom_line(),
+      geom_smooth(),
       
-    plot6= #A plot of Marsh Accretion over time --------------------------------
-      ggplot(modelOutput$annualTimeSteps,
-             aes(x=years, y=)) +
-      labs(x="time (yrs)", y="Marsh Accretion (tons C/(ha yr))") +
-      geom_line()
+    plot6= #A plot of Marsh Accretion over time (change in carbon stock over time)
+      ggplot(modelOutput$cohorts,
+             aes(x=year, y=dcdt)) +
+      labs(x="time (yrs)", y="Change in Carbon Stock (g/m^2 year") +
+      ylim(-.001, .001) +
+      geom_point()
     )
+  print(modelOutput$cohorts$dcdt)
   
   return(ans)
 }
