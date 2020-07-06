@@ -54,11 +54,11 @@ shinyServer(function(input, output, session) {
   })
   
 # Plots Tab -----------------------------------------------------------------------------
-  # Run "makePlots"
+  # Run "makeGuiPlots"
   graphs <- eventReactive(input$run_sim, {
     modelOutput <- do.call(rCTM::runMemWithCohorts, getParms())
     #print(modelOutput)
-    makePlots(modelOutput)
+    makeGuiPlots(modelOutput)
   })  
   
   # Render Plots for UI window
@@ -99,15 +99,22 @@ shinyServer(function(input, output, session) {
     )}, deleteFile = TRUE)
   
 # Model Diagram Tab ---------------------------------------------------------------------  
-  #Render Model diagram
-  output$model_diagram <- renderImage({
-    # Return a list containing the filename
-    list(src = "../www/model_diagram.png",
-         contentType = 'image/png',
-         width = 900,
-         height = 500,
-         alt = "Oops... something went wrong!"
-    )}, deleteFile = FALSE)
+  #Render Model diagram from an image file
+  # output$model_diagram <- renderImage({
+  #   # Return a list containing the filename
+  #   list(src = "../www/model_diagram.png",
+  #        contentType = 'image/png',
+  #        width = 900,
+  #        height = 500,
+  #        alt = "Oops... something went wrong!"
+  #   )}, deleteFile = FALSE)
+  
+  # Source diagram from ModelStructure.Rmd
+  # temp = tempfile(fileext=".R")
+  # knitr::purl(input = "../vignettes/ModelStructure.Rmd", output=temp)
+  # source(temp)
+  
+  output$model_diagram <- renderGrViz(model_diagram)
   
 # Parameter Ranges Tab ------------------------------------------------------------------
   #Read csv as data table:

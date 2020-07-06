@@ -15,11 +15,11 @@ library(DT)
 
 shinyUI(fluidPage(dashboardPage(
     skin = "green",
-    title = paste("The Marsh Equilibrium Cohort Model v", packageVersion('rCTM')),
+    title = paste0("The Marsh Equilibrium Cohort Model v", packageVersion('rCTM')),
 
 # HEADER ---------------------------------------------------------------------
     dashboardHeader(
-        title = paste("The Marsh Equilibrium Cohort Model v", packageVersion('rCTM')),
+        title = paste0("The Marsh Equilibrium Cohort Model v", packageVersion('rCTM')),
         titleWidth = 500
     ),
 
@@ -174,7 +174,8 @@ shinyUI(fluidPage(dashboardPage(
         tabItem(tabName = "ModelDiagram",
                 box(width = 12,
                     title = "Model Diagram",
-                    imageOutput("model_diagram")
+                    #imageOutput("model_diagram")
+                    grVizOutput("model_diagram")
                     )
                 ),
         tabItem(tabName = "ParameterRanges",

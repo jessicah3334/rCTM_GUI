@@ -12,7 +12,7 @@
 #' 
 #' @export
 #'
-makePlots <- function(modelOutput){
+makeGuiPlots <- function(modelOutput){
   #calculate OM fraction for modelOutput$cohorts
   modelOutput$cohorts <- modelOutput$cohorts %>% 
     dplyr::mutate(om_fraction = (fast_OM+slow_OM)/cumCohortVol)
@@ -58,7 +58,7 @@ makePlots <- function(modelOutput){
       
     plot5= #A plot of Carbon stock per volume vs depth -------------------------
       ggplot(modelOutput$cohorts,
-             aes(x=layer_top, y=om_fraction)) +
+             aes(x=(layer_top+layer_bottom/2), y=om_fraction)) +
       labs(x="Sediment Depth (cm)", y="Sediment Organic Matter (%)") +
       geom_smooth(),
       
