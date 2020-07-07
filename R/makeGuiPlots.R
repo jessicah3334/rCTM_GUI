@@ -4,6 +4,7 @@
 #'
 #' @param modelOutput A list of three data frames. Contains output of the function "runMemWithCohorts".
 #'
+#' @importFrom plyr
 #' @importFrom dplyr rename starts_with mutate group_by summarize filter if_else
 #' @importFrom tidyr separate  pivot_longer
 #' @import ggplot2 to make pretty plots
@@ -18,17 +19,22 @@ makeGuiPlots <- function(modelOutput){
     dplyr::mutate(om_fraction = (fast_OM+slow_OM)/cumCohortVol)
   
   #Find change in carbon stock over time by taking the numerical derivative
-  modelOutput$cohorts <- modelOutput$cohorts %>%
-    dplyr::mutate(dcdt = rep(NA, times = nrow(modelOutput$cohorts)))
-                    
-  carbon <- rep(NA, times = nrow(modelOutput$cohorts))
-  for(ii in 1:nrow(modelOutput$cohorts)){
-        carbon[ii] <- modelOutput$cohorts$fast_OM[ii] + modelOutput$cohorts$slow_OM[ii]
-  }
-  for(ii in 1:nrow(modelOutput$cohorts)){
-        modelOutput$cohorts$dcdt[ii] <- (carbon[ii+1] - carbon[ii]) / (modelOutput$cohorts$age[ii+1] - modelOutput$cohorts$age[ii])
-  }
-                
+  # modelOutput$cohorts <- modelOutput$cohorts %>%
+  #   dplyr::mutate(dcdt = rep(NA, times = nrow(modelOutput$cohorts)))
+  #                   
+  # carbon <- rep(NA, times = nrow(modelOutput$cohorts))
+  # for(ii in 1:nrow(modelOutput$cohorts)){
+  #       carbon[ii] <- modelOutput$cohorts$fast_OM[ii] + modelOutput$cohorts$slow_OM[ii]
+  # }
+  # for(ii in 1:nrow(modelOutput$cohorts)){
+  #       modelOutput$cohorts$dcdt[ii] <- (carbon[ii+1] - carbon[ii]) / (modelOutput$cohorts$age[ii+1] - modelOutput$cohorts$age[ii])
+  # }
+  
+  #Compute average carbon stock for each year of the simulation
+  cohorts <- modelOutput$cohorts %>%
+    dplyr::mutate(carbon = fast_OM + slow_OM) %>%
+    dplyr::group_by(year) %>%
+    dplyr::summarise(carb = mean(carbon))
   
   ans <- list(
     plot1= #A plot of Standing biomass vs Marsh Elevation ---------------------
@@ -63,10 +69,9 @@ makeGuiPlots <- function(modelOutput){
       geom_smooth(),
       
     plot6= #A plot of Marsh Accretion over time (change in carbon stock over time)
-      ggplot(modelOutput$cohorts,
-             aes(x=year, y=dcdt)) +
-      labs(x="time (yrs)", y="Change in Carbon Stock (g/m^2 year") +
-      ylim(-.001, .001) +
+      ggplot(cohorts,
+             aes(x=year, y=carb)) +
+      labs(x="time (yrs)", y="Carbon Stock (g/m^2 year") +
       geom_point()
     )
   print(modelOutput$cohorts$dcdt)

@@ -53,6 +53,11 @@ shinyServer(function(input, output, session) {
     do.call(rCTM::runMemWithCohorts, getParms())
   })
   
+# Restore Inputs Button -----------------------------------------------------------------
+  observeEvent(input$restore_inputs, {
+    reset("lunarNodalAmp")
+  })
+  
 # Plots Tab -----------------------------------------------------------------------------
   # Run "makeGuiPlots"
   graphs <- eventReactive(input$run_sim, {
@@ -122,6 +127,64 @@ shinyServer(function(input, output, session) {
   
   output$parameter_spreadsheet <- DT::renderDataTable({
     DT::datatable(parameters)})
+    
+# R Code for Parameterization Tab -------------------------------------------------------
+  # Load the current input variables
+  # *Don't change white space for this section*
+  output$run_on_local <- renderText({
+    c("# Make sure the rCTM library is installed
+library(rCTM)",
+      "
+      
+# Run rMEM with Cohorts
+      runMemWithCohorts(startYear =", input$dateRange[1],
+      ", endYear =", input$dateRange[2],
+      ", relSeaLevelRiseInit =", input$relSeaLevelRiseInit,
+      ", relSeaLevelRiseTotal =", input$relSeaLevelRiseTotal,
+      ", initElv = ", input$initElev,
+      ", meanSeaLevel =", input$meanSeaLevel,
+      ", meanSeaLevelDatum =", input$meanSeaLevelDatum,
+      ", meanHighWater =", input$meanHighWater,
+      ", meanHighHighWater =", input$meanHighHighWater,
+      ", meanHighHighWaterSpring =", input$meanHighHighWaterSpring,
+      ", suspendedSediment =", input$suspendedSediment,
+      ", lunarNodalAmp =", input$lunarNodalAmp,
+      ", bMax =", input$bMax,
+      ", zVegMin =", input$vegElevRange[1],
+      ", zVegMax =", input$vegElevRange[2],
+      ", zVegPeak =", input$zVegPeak,
+      ", plantElevationType =", input$planeElevationType,
+      ", rootToShoot =", input$rootToShoot,
+      ", rootTurnover =", input$rootTurnover,
+      ", rootDepthMax =", input$rootDepthMax,
+      ", shape =", input$shape,
+      ", omDecayRate =", input$omDecayRate,
+      ", recalcitrantFrac =", input$recalcitrantFrac,
+      ", settlingVelocity =", input$settlingVelocity,
+      ", omPackingDensity =", input$omPackingDensity,
+      ", mineralPackingDensity =", input$mineralPackingDensity,
+      ", rootPackingDensity =", input$rootPackingDensity,
+      ", coreYear =", input$coreYear,
+      ", coreDepth =", input$coreDepth,
+      ")",
+      "
+
+# look at the structure of the function output
+str(memCohortExample)
+
+# Look at the three tables making up the output
+head(memCohortExample$annualTimeSteps)
+head(memCohortExample$cohorts)
+head(memCohortExample$core)
+
+# run the animate cohorts function
+# This will take a few minutes to run and then save an animation of accumulating cohorts
+animateCohorts(cohorts=memCohortExample$cohorts,
+               scenario=memCohortExample$annualTimeSteps,
+               filename='MEM-Try_191212.gif')"
+    )
+  })
+  
   
   
 })

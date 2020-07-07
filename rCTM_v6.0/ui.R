@@ -9,7 +9,9 @@
 library(shiny)
 library(shinydashboard)
 library(rCTM)
+library(DiagrammeR)
 library(DT)
+library(shinyjs)
 #Currently sourcing R scripts manually:
     #source("./R/makePlots.R")
 
@@ -76,7 +78,9 @@ shinyUI(fluidPage(dashboardPage(
     )),
 
 # MAIN PANEL -----------------------------------------------------------------
-    dashboardBody(tabItems(
+    dashboardBody( 
+        useShinyjs(), #Set up shinyjs
+        tabItems(
         tabItem(tabName = "Inputs",
             box(title = "Physical Inputs",
                 width = 12,
@@ -184,8 +188,15 @@ shinyUI(fluidPage(dashboardPage(
                     DT::dataTableOutput('parameter_spreadsheet')
                     )
                 ),
-        tabItem(tabName = "RCodeforParameterization",
+        tabItem(tabName = "RCodeForParameterization",
                   box(width = 12,
+                      title = "R Code for Parameterization",
+                      p("Copy and run the R code chunk below to run this model with
+                        the selected inputs. For help, see",
+                        a("README.md", 
+                           href = "https://github.com/tilbud/rCTM/blob/master/README.md")),
+                      code(style = "display:block; white-space:pre-wrap", textOutput("run_on_local"))
+                      
                       
                   )
                 )
