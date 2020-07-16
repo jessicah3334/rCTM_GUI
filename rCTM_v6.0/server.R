@@ -53,17 +53,33 @@ shinyServer(function(input, output, session) {
     do.call(rCTM::runMemWithCohorts, getParms())
   })
   
+# Check for NA buttons ------------------------------------------------------------------
+  observeEvent(input$NA_meanHighHighWater, {
+    toggleState("meanHighHighWater")
+    updateSliderInput(session, "meanHighHighWater", value = NA)
+  }, ignoreInit = TRUE)
+  observeEvent(input$NA_meanHighHighWaterSpring, {
+    toggleState("meanHighHighWaterSpring")
+    updateSliderInput(session, "meanHighHighWaterSpring", value = NA)
+  }, ignoreInit = TRUE)
+  observeEvent(input$NA_zVegPeak, {
+    toggleState("zVegPeak")
+    updateSliderInput(session, "zVegPeak", value = NA)
+  }, ignoreInit = TRUE)
+  
 # Restore Inputs Button -----------------------------------------------------------------
   observeEvent(input$restore_inputs, {
-    reset("lunarNodalAmp")
+    reset("physical_inputs")
+    reset("biological_inputs")
+    reset("optional_inputs")
   })
   
 # Plots Tab -----------------------------------------------------------------------------
   # Run "makeGuiPlots"
   graphs <- eventReactive(input$run_sim, {
     modelOutput <- do.call(rCTM::runMemWithCohorts, getParms())
-    #print(modelOutput)
-    makeGuiPlots(modelOutput)
+    inputParms <- getParms()
+    makeGuiPlots(modelOutput, inputParms)
   })  
   
   # Render Plots for UI window

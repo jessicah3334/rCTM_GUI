@@ -85,7 +85,7 @@ shinyUI(fluidPage(dashboardPage(
             box(title = "Physical Inputs",
                 width = 12,
                 collapsible = TRUE,
-                fluidRow(
+                fluidRow(div(id="physical_inputs",
                     column(width = 4,
                            sliderInput("dateRange", "Date Range", 1500, 2500, c(2020,2119), step = 1, sep = ""),
                            sliderInput("relSeaLevelRiseTotal", "Century Sea Level Rise", 0, 100, 100),
@@ -107,11 +107,11 @@ shinyUI(fluidPage(dashboardPage(
                            sliderInput("recalcitrantFrac", "Recalcitrant Fraction", 0, 1, 0.2, step = 0.1)
                     ),
                 )
-            ),
+            )),
             box(title = "Biological Inputs",
                 width = 12,
                 collapsible = TRUE,
-                fluidRow(
+                fluidRow(div(id="biological_inputs",
                     column(width = 4,
                            sliderInput("vegElevRange", "Plant Growing Elevation Range", -30, 999, c(-24.7,44.4), step = 0.1),
                            sliderInput("bMax", "Maximum Biomass", 0, 999, 0.25, step = 0.01),
@@ -130,24 +130,27 @@ shinyUI(fluidPage(dashboardPage(
                            selectInput("shape", "Root Shape", c("linear", "exponential"))
                     )
                 ),
-            ),
+            )),
             box(title = "Optional Inputs",
                 width = 12,
                 collapsible = TRUE,
-                fluidRow(
+                fluidRow(div(id="optional_inputs",
                     column(width = 4,
-                           sliderInput("meanHighHighWater", "Mean High High Water", 0, 999, 25.4, step = 0.1) 
+                           sliderInput("meanHighHighWater", "Mean High High Water", 0, 999, 25.4, step = 0.1),
+                           checkboxInput("NA_meanHighHighWater", "check for NA")
                     ),
                     column(width = 4,
-                           sliderInput("meanHighHighWaterSpring", "Mean High High Water Spring", 0, 999, 31.2, step = 0.1)  
+                           sliderInput("meanHighHighWaterSpring", "Mean High High Water Spring", 0, 999, 31.2, step = 0.1),
+                           checkboxInput("NA_meanHighHighWaterSpring", "check for NA")
                     ),
                     column(width = 4,
-                           sliderInput("zVegPeak", "Peak Veg. Elev.", 0, 999, 22.1, step = 0.1)
+                           sliderInput("zVegPeak", "Peak Veg. Elev.", 0, 999, 22.1, step = 0.1),
+                           checkboxInput("NA_zVegPeak", "check for NA")
                     )
                 )
             )    
                 
-        ),
+        )),
         tabItem(tabName = "Plots",
             box(title = "Plots",
                 width = 12,
@@ -177,7 +180,7 @@ shinyUI(fluidPage(dashboardPage(
                 ),
         tabItem(tabName = "ModelDiagram",
                 box(width = 12,
-                    title = "Model Diagram",
+                    title = "Model Function Dependencies",
                     #imageOutput("model_diagram")
                     grVizOutput("model_diagram")
                     )
