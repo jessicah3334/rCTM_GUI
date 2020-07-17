@@ -22,7 +22,14 @@ shinyUI(fluidPage(dashboardPage(
 # HEADER ---------------------------------------------------------------------
     dashboardHeader(
         title = paste0("The Marsh Equilibrium Cohort Model v", packageVersion('rCTM')),
-        titleWidth = 500
+        titleWidth = 500,
+        tags$li(# Creating a link to the github page
+            a(
+                icon("github"),
+                href = "https://github.com/tilbud/rCTM/tree/master/R",
+                title = "Link to Github"
+            ),
+        class = "dropdown")
     ),
 
 # SIDEBAR --------------------------------------------------------------------
@@ -36,6 +43,11 @@ shinyUI(fluidPage(dashboardPage(
                    actionButton("run_sim", "Run Simulation")),
             column(4,
                    actionButton("restore_inputs", "Restore Inputs"))),
+        menuItem(
+            "INSTRUCTIONS",
+            tabName = "Instructions",
+            icon = icon("question")
+        ),
         menuItem(
             "INPUTS",
             tabName = "Inputs",
@@ -81,6 +93,13 @@ shinyUI(fluidPage(dashboardPage(
     dashboardBody( 
         useShinyjs(), #Set up shinyjs
         tabItems(
+        tabItem(tabName = "Instructions",
+            box(width = 12,
+                title = "Instructions for Modifying and Executing MEM VI",
+                includeMarkdown('../www/Gui_Instructions.Rmd')
+                #uiOutput("markdown")
+            )
+        ),
         tabItem(tabName = "Inputs",
             box(title = "Physical Inputs",
                 width = 12,
@@ -165,10 +184,9 @@ shinyUI(fluidPage(dashboardPage(
                            plotOutput("plot5", height = '200px'),
                            plotOutput("plot6", height = '200px')
                            )
-                )
-            )
-        ),
-        
+                        )
+                    )
+                ),
         tabItem(tabName = "Animation",
                 box(width = 12,
                     title = "Animation",

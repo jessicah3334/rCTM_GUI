@@ -74,6 +74,12 @@ shinyServer(function(input, output, session) {
     reset("optional_inputs")
   })
   
+# Instructions Tab ----------------------------------------------------------------------
+  # Knit and Render Gui_Instructions.Rmd
+  #output$markdown <- renderUI({
+   # HTML(markdown::markdownToHTML('../www/Gui_Instructions.Rmd'))#, quiet = TRUE))
+  #})
+  
 # Plots Tab -----------------------------------------------------------------------------
   # Run "makeGuiPlots"
   graphs <- eventReactive(input$run_sim, {
@@ -116,7 +122,8 @@ shinyServer(function(input, output, session) {
     list(src = "MEM-CTM-animated.gif",
          contentType = 'image/gif',
           width = 450,
-          height = 450
+          height = 450,
+          alt = 'Click "Generate Animation". This gif may take a couple of minutes to render.'
     )}, deleteFile = TRUE)
   
 # Model Diagram Tab ---------------------------------------------------------------------  
