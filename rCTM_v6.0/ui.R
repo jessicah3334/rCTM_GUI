@@ -97,7 +97,6 @@ shinyUI(fluidPage(dashboardPage(
             box(width = 12,
                 title = "Instructions for Modifying and Executing MEM VI",
                 includeMarkdown('../www/Gui_Instructions.Rmd')
-                #uiOutput("markdown")
             )
         ),
         tabItem(tabName = "Inputs",
@@ -155,16 +154,19 @@ shinyUI(fluidPage(dashboardPage(
                 collapsible = TRUE,
                 fluidRow(div(id="optional_inputs",
                     column(width = 4,
-                           sliderInput("meanHighHighWater", "Mean High High Water", 0, 999, 25.4, step = 0.1),
-                           checkboxInput("NA_meanHighHighWater", "check for NA")
+                           sliderInput("meanHighHighWater", "Mean High High Water", value = 25.4, 0, 999, step = 0.1)
+                           #numericInput("meanHighHighWater", "Mean High High Water", value = 25.4, NA, 999, step = 0.1),
+                           #checkboxInput("NA_meanHighHighWater", "check for NA", value = TRUE)
                     ),
                     column(width = 4,
-                           sliderInput("meanHighHighWaterSpring", "Mean High High Water Spring", 0, 999, 31.2, step = 0.1),
-                           checkboxInput("NA_meanHighHighWaterSpring", "check for NA")
+                           sliderInput("meanHighHighWaterSpring", "Mean High High Water Spring", value = 31.2, 0, 999, step = 0.1)
+                           #numericInput("meanHighHighWaterSpring", "Mean High High Water Spring", value = 31.2, NA, 999, step = 0.1),
+                           #checkboxInput("NA_meanHighHighWaterSpring", "check for NA", value = TRUE)
                     ),
                     column(width = 4,
-                           sliderInput("zVegPeak", "Peak Veg. Elev.", 0, 999, 22.1, step = 0.1),
-                           checkboxInput("NA_zVegPeak", "check for NA")
+                           sliderInput("zVegPeak", "Peak Veg. Elev.", value = 22.1, 0, 999, step = 0.1)
+                           #numericInput("zVegPeak", "Peak Veg. Elev.", value = 31.2, NA, 999, step = 0.1),
+                           #checkboxInput("NA_zVegPeak", "check for NA", value = TRUE)
                     )
                 )
             )    

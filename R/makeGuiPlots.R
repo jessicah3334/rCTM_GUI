@@ -65,10 +65,10 @@ makeGuiPlots <- function(modelOutput, inputParms){
     plot4= #A plot of Marsh Elevation compared to Mean Sea Level over time ----
       ggplot(modelOutput$annualTimeSteps) +
       labs(x="time (yrs)", y="(cm NAVD)" ) +
-      geom_line(aes(x=years, y=surfaceElevation, color = "Surface Elevation")) +
-      geom_line(aes(x=years, y=meanSeaLevel, color = "Mean Sea Level")) +
-      theme(legend.justification=c(0,1), legend.position=c(0,1)) +
-      theme_gray(base_size = 13),
+      geom_line(aes(x=years, y=surfaceElevation, color = "Surface Elevation"), size=1) +
+      geom_line(aes(x=years, y=meanSeaLevel, color = "Mean Sea Level"), size=1) +
+      theme_gray(base_size = 13) +
+      theme(legend.justification=c(0,1), legend.position=c(0,1), legend.title=element_blank()),
       
     plot5= #A plot of Carbon stock per volume vs depth -------------------------
       ggplot(modelOutput$cohorts,

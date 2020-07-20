@@ -4,7 +4,7 @@ output: html_document
 ---
 
 #### __Introduction__
-This is the Graphic User Interface for the Marsh Equilibrium Cohort Theory Model. This model draws on both the Marsh Equilibrium Model and the Cohort Theory Model. The Cohort theory model (CTM) is a simple method for accounting for volume and mass changes in tidal systems. This package also contains a special implementation of CTM which uses the Marsh Equilibrium Model (MEM) to drive inorganic surface sedimentation and below ground organic matter addition, dynamically as a function of sea-level.
+This is the Graphic User Interface for the Marsh Equilibrium Cohort Theory Model. This model draws on both the Marsh Equilibrium Model and the Cohort Theory Model. The Cohort Theory Model (CTM) is a simple method for accounting for volume and mass changes in tidal systems. This package also contains a special implementation of CTM which uses the Marsh Equilibrium Model (MEM) to drive inorganic surface sedimentation and below ground organic matter addition, dynamically as a function of sea-level.
 
 #### __Instructions__
 

@@ -53,19 +53,24 @@ shinyServer(function(input, output, session) {
     do.call(rCTM::runMemWithCohorts, getParms())
   })
   
+  # Open the plots tab when "Run Simulation" is clicked.
+  observeEvent(input$run_sim, {
+    updateTabsetPanel(session = session, inputId = "tabs", selected = "Plots")
+  })
+  
 # Check for NA buttons ------------------------------------------------------------------
-  observeEvent(input$NA_meanHighHighWater, {
-    toggleState("meanHighHighWater")
-    updateSliderInput(session, "meanHighHighWater", value = NA)
-  }, ignoreInit = TRUE)
-  observeEvent(input$NA_meanHighHighWaterSpring, {
-    toggleState("meanHighHighWaterSpring")
-    updateSliderInput(session, "meanHighHighWaterSpring", value = NA)
-  }, ignoreInit = TRUE)
-  observeEvent(input$NA_zVegPeak, {
-    toggleState("zVegPeak")
-    updateSliderInput(session, "zVegPeak", value = NA)
-  }, ignoreInit = TRUE)
+  # observeEvent(input$NA_meanHighHighWater, {
+  #   toggleState("meanHighHighWater")
+  #   updateNumericInput(session, "meanHighHighWater", value = NA)
+  # })
+  # observeEvent(input$NA_meanHighHighWaterSpring, {
+  #   toggleState("meanHighHighWaterSpring")
+  #   updateNumericInput(session, "meanHighHighWaterSpring", value = NA)
+  # })
+  # observeEvent(input$NA_zVegPeak, {
+  #   toggleState("zVegPeak")
+  #   updateNumericInput(session, "zVegPeak", value = NA)
+  # })
   
 # Restore Inputs Button -----------------------------------------------------------------
   observeEvent(input$restore_inputs, {
@@ -73,12 +78,6 @@ shinyServer(function(input, output, session) {
     reset("biological_inputs")
     reset("optional_inputs")
   })
-  
-# Instructions Tab ----------------------------------------------------------------------
-  # Knit and Render Gui_Instructions.Rmd
-  #output$markdown <- renderUI({
-   # HTML(markdown::markdownToHTML('../www/Gui_Instructions.Rmd'))#, quiet = TRUE))
-  #})
   
 # Plots Tab -----------------------------------------------------------------------------
   # Run "makeGuiPlots"
